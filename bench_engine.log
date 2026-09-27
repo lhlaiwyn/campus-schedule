@@ -1,0 +1,92 @@
+时间: 2026-09-27 21:20:30
+环境: 12 vCPU / 5.8Gi 内存
+参数: wrk 4 线程 / 100 连接 / 每轮 10s / 每块 3 轮
+说明: 两个引擎共用同一份业务代码（api/dispatcher.cpp），唯一变量是 HTTP 引擎
+
+本次模式: db
+
+=========== 二、真实业务路径（/api/courses 带 token，每次查库、缓存关闭）===========
+目的：事件循环里跑的是阻塞式 MySQL 查询，此时「worker 数」=「同时在飞的查询数」，
+      它才是吞吐上限。所以这里扫 1 / 4 / 16 个 worker，再看连接池放大的效果。
+
+########## 自研 epoll（1 worker）查课表 ##########
+服务 PID=550
+引擎自检通过: httpEngine=net
+  第1轮                            RPS 1786.94     平均 55.67ms   P99 81.87ms  非2xx 0    无 socket 错误
+  第2轮                            RPS 1754.81     平均 56.59ms   P99 85.86ms  非2xx 0    无 socket 错误
+  第3轮                            RPS 1725.70     平均 57.61ms   P99 82.62ms  非2xx 0    无 socket 错误
+  服务端日志:
+    [2026-09-27 21:20:30] [info] campus-schedule v0.1.0 启动
+    [2026-09-27 21:20:30] [info] 配置: server=127.0.0.1:8080 engine=net(workers=1,LT) db=campus@127.0.0.1:3306/campus_schedule pool=8 portal=mock@127.0.0.1:9090 auth=ttl3600s(默认密钥!) rateLimit=20/s burst=40 cache=off@127.0.0.1:6379 ttl=300s
+    [2026-09-27 21:20:30] [warning] 正在用内置的开发密钥签发 JWT，上线前请设置 CAMPUS_AUTH_SECRET
+    [2026-09-27 21:20:30] [info] 已加载教务适配器 2 个
+    [2026-09-27 21:20:30] [info] MySQL 连接池就绪: 8 条连接 -> 127.0.0.1/campus_schedule
+    [2026-09-27 21:20:30] [info] 课表缓存未启用（设置 CAMPUS_CACHE_ENABLED=true 可开启）
+
+########## 自研 epoll（4 worker）查课表 ##########
+服务 PID=673
+引擎自检通过: httpEngine=net
+  第1轮                            RPS 6416.16     平均 15.56ms   P99 32.20ms  非2xx 0    无 socket 错误
+  第2轮                            RPS 6459.97     平均 15.42ms   P99 31.71ms  非2xx 0    无 socket 错误
+  第3轮                            RPS 6166.59     平均 16.24ms   P99 35.87ms  非2xx 0    无 socket 错误
+  服务端日志:
+    [2026-09-27 21:21:02] [info] campus-schedule v0.1.0 启动
+    [2026-09-27 21:21:02] [info] 配置: server=127.0.0.1:8080 engine=net(workers=4,LT) db=campus@127.0.0.1:3306/campus_schedule pool=8 portal=mock@127.0.0.1:9090 auth=ttl3600s(默认密钥!) rateLimit=20/s burst=40 cache=off@127.0.0.1:6379 ttl=300s
+    [2026-09-27 21:21:02] [warning] 正在用内置的开发密钥签发 JWT，上线前请设置 CAMPUS_AUTH_SECRET
+    [2026-09-27 21:21:02] [info] 已加载教务适配器 2 个
+    [2026-09-27 21:21:02] [info] MySQL 连接池就绪: 8 条连接 -> 127.0.0.1/campus_schedule
+    [2026-09-27 21:21:02] [info] 课表缓存未启用（设置 CAMPUS_CACHE_ENABLED=true 可开启）
+
+########## 自研 epoll（16 worker）查课表 ##########
+服务 PID=772
+引擎自检通过: httpEngine=net
+  第1轮                            RPS 14473.39    平均 7.07ms    P99 20.18ms  非2xx 0    无 socket 错误
+  第2轮                            RPS 14279.59    平均 7.24ms    P99 20.48ms  非2xx 0    无 socket 错误
+  第3轮                            RPS 14015.15    平均 7.36ms    P99 22.07ms  非2xx 0    无 socket 错误
+  服务端日志:
+    [2026-09-27 21:21:34] [info] campus-schedule v0.1.0 启动
+    [2026-09-27 21:21:34] [info] 配置: server=127.0.0.1:8080 engine=net(workers=16,LT) db=campus@127.0.0.1:3306/campus_schedule pool=8 portal=mock@127.0.0.1:9090 auth=ttl3600s(默认密钥!) rateLimit=20/s burst=40 cache=off@127.0.0.1:6379 ttl=300s
+    [2026-09-27 21:21:34] [warning] 正在用内置的开发密钥签发 JWT，上线前请设置 CAMPUS_AUTH_SECRET
+    [2026-09-27 21:21:34] [info] 已加载教务适配器 2 个
+    [2026-09-27 21:21:34] [info] MySQL 连接池就绪: 8 条连接 -> 127.0.0.1/campus_schedule
+    [2026-09-27 21:21:34] [info] 课表缓存未启用（设置 CAMPUS_CACHE_ENABLED=true 可开启）
+
+########## 自研 epoll（16 worker + 16 连接池）查课表 ##########
+服务 PID=883
+引擎自检通过: httpEngine=net
+  第1轮                            RPS 16995.90    平均 6.07ms    P99 17.59ms  非2xx 0    无 socket 错误
+  第2轮                            RPS 17131.36    平均 6.03ms    P99 17.41ms  非2xx 0    无 socket 错误
+  第3轮                            RPS 17430.24    平均 5.78ms    P99 14.56ms  非2xx 0    无 socket 错误
+  服务端日志:
+    [2026-09-27 21:22:07] [info] campus-schedule v0.1.0 启动
+    [2026-09-27 21:22:07] [info] 配置: server=127.0.0.1:8080 engine=net(workers=16,LT) db=campus@127.0.0.1:3306/campus_schedule pool=16 portal=mock@127.0.0.1:9090 auth=ttl3600s(默认密钥!) rateLimit=20/s burst=40 cache=off@127.0.0.1:6379 ttl=300s
+    [2026-09-27 21:22:07] [warning] 正在用内置的开发密钥签发 JWT，上线前请设置 CAMPUS_AUTH_SECRET
+    [2026-09-27 21:22:07] [info] 已加载教务适配器 2 个
+    [2026-09-27 21:22:07] [info] MySQL 连接池就绪: 16 条连接 -> 127.0.0.1/campus_schedule
+    [2026-09-27 21:22:07] [info] 课表缓存未启用（设置 CAMPUS_CACHE_ENABLED=true 可开启）
+
+########## cpp-httplib（线程池）查课表 ##########
+服务 PID=1002
+引擎自检通过: httpEngine=httplib
+  第1轮                            RPS 13523.19    平均 19.70ms   P99 453.59ms 非2xx 0    Socket errors: connect 0, read 0, write 0, timeout 29
+  第2轮                            RPS 13909.59    平均 10.79ms   P99 34.05ms  非2xx 0    无 socket 错误
+  第3轮                            RPS 14012.74    平均 11.06ms   P99 33.14ms  非2xx 0    无 socket 错误
+  服务端日志:
+    [2026-09-27 21:22:39] [info] campus-schedule v0.1.0 启动
+    [2026-09-27 21:22:39] [info] 配置: server=127.0.0.1:8080 engine=httplib(workers=auto,LT) db=campus@127.0.0.1:3306/campus_schedule pool=8 portal=mock@127.0.0.1:9090 auth=ttl3600s(默认密钥!) rateLimit=20/s burst=40 cache=off@127.0.0.1:6379 ttl=300s
+    [2026-09-27 21:22:39] [warning] 正在用内置的开发密钥签发 JWT，上线前请设置 CAMPUS_AUTH_SECRET
+    [2026-09-27 21:22:39] [info] 已加载教务适配器 2 个
+    [2026-09-27 21:22:39] [info] MySQL 连接池就绪: 8 条连接 -> 127.0.0.1/campus_schedule
+    [2026-09-27 21:22:39] [info] 课表缓存未启用（设置 CAMPUS_CACHE_ENABLED=true 可开启）
+
+=========== 汇总（每块 3 轮的 RPS）===========
+自研 epoll（1 worker）查课表      | 1786.94 1754.81 1725.70
+自研 epoll（4 worker）查课表      | 6416.16 6459.97 6166.59
+自研 epoll（16 worker）查课表     | 14473.39 14279.59 14015.15
+自研 epoll（16 worker + 16 连接池）查课表 | 16995.90 17131.36 17430.24
+cpp-httplib（线程池）查课表      | 13523.19 13909.59 14012.74
+
+说明：对比结论必须同时看 RPS、P99、非 2xx 和 socket 错误——
+      只看 RPS 很容易被「失败请求也算进去」骗到。
+
+服务已停止

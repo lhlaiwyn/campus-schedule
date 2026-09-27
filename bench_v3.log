@@ -1,0 +1,131 @@
+时间: 2026-09-25 01:37:35
+环境: WSL2 Ubuntu 24.04，12 vCPU / 5.8Gi 内存
+配置: 线程池 256 + TCP_NODELAY + listen backlog 1024，连接池 8
+
+服务 PID=520
+
+########## 1. 50 并发 ##########
+--- 1.1  5000 请求 ---
+Complete requests:      5000
+Failed requests:        4
+   (Connect: 0, Receive: 0, Length: 4, Exceptions: 0)
+Requests per second:    943.03 [#/sec] (mean)
+Time per request:       53.021 [ms] (mean)
+Time per request:       1.060 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%      1
+  90%      3
+  95%      3
+  98%      3
+  99%      3
+ 100%   5006 (longest request)
+
+（冷却 12 秒，等上一轮的 keep-alive 连接释放线程）
+
+########## 2. 100 并发 ##########
+--- 2.1  8000 请求 ---
+Complete requests:      8000
+Failed requests:        0
+Requests per second:    9823.29 [#/sec] (mean)
+Time per request:       10.180 [ms] (mean)
+Time per request:       0.102 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%      1
+  90%      1
+  95%      1
+  98%      1
+  99%      1
+ 100%     35 (longest request)
+
+（冷却 12 秒，等上一轮的 keep-alive 连接释放线程）
+
+########## 3. 200 并发 ##########
+--- 3.1  10000 请求 ---
+Complete requests:      10000
+Failed requests:        0
+Requests per second:    10077.16 [#/sec] (mean)
+Time per request:       19.847 [ms] (mean)
+Time per request:       0.099 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%      1
+  90%      1
+  95%      1
+  98%      1
+  99%      8
+ 100%     43 (longest request)
+
+（冷却 12 秒，等上一轮的 keep-alive 连接释放线程）
+
+########## 4. 200 并发重复（验证可复现）##########
+--- 4.1  10000 请求 ---
+Complete requests:      10000
+Failed requests:        94
+   (Connect: 0, Receive: 0, Length: 94, Exceptions: 0)
+Requests per second:    224.52 [#/sec] (mean)
+Time per request:       890.799 [ms] (mean)
+Time per request:       4.454 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%     50
+  90%     55
+  95%     55
+  98%     59
+  99%   5010
+ 100%  43995 (longest request)
+
+（冷却 12 秒，等上一轮的 keep-alive 连接释放线程）
+
+########## 5. 500 并发 ##########
+--- 5.1  20000 请求 ---
+Complete requests:      20000
+Failed requests:        165
+   (Connect: 0, Receive: 0, Length: 165, Exceptions: 0)
+Requests per second:    268.15 [#/sec] (mean)
+Time per request:       1864.642 [ms] (mean)
+Time per request:       3.729 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%     50
+  90%     53
+  95%     57
+  98%   1095
+  99%   5009
+ 100%  73446 (longest request)
+
+（冷却 12 秒，等上一轮的 keep-alive 连接释放线程）
+
+########## 6. 对照：关闭 keep-alive ##########
+--- 6.1  5000 请求（无 -k） ---
+Complete requests:      5000
+Failed requests:        0
+Requests per second:    11167.34 [#/sec] (mean)
+Time per request:       4.477 [ms] (mean)
+Time per request:       0.090 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%      1
+  90%      1
+  95%      1
+  98%      2
+  99%      2
+ 100%      4 (longest request)
+
+（冷却 12 秒，等上一轮的 keep-alive 连接释放线程）
+
+########## 服务端日志 ##########
+[2026-09-25 01:37:35] [info] campus-schedule v0.1.0 启动
+[2026-09-25 01:37:35] [info] 配置: server=127.0.0.1:8080 db=campus@127.0.0.1:3306/campus_schedule pool=8
+[2026-09-25 01:37:35] [info] MySQL 连接池就绪: 8 条连接 -> 127.0.0.1/campus_schedule
+[2026-09-25 01:37:35] [info] HTTP 服务已启动: http://127.0.0.1:8080
+[2026-09-25 01:37:35] [info] 试一下: curl http://127.0.0.1:8080/api/health
+
+服务已停止

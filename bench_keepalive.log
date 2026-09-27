@@ -1,0 +1,120 @@
+时间: 2026-09-26 16:19:24
+环境: 12 vCPU / 5.8Gi 内存
+配置: TCP_NODELAY + 线程池 256 + backlog 1024 + keep-alive 超时 30s
+方式: 连续 6 轮，每轮 100 并发 5000 请求，中间不冷却（故意制造复用碰撞）
+
+服务 PID=513
+
+--- 第 1 轮  100 并发 5000 请求 ---
+Complete requests:      5000
+Failed requests:        0
+Requests per second:    9264.63 [#/sec] (mean)
+Time per request:       10.794 [ms] (mean)
+Time per request:       0.108 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%      1
+  90%      1
+  95%      1
+  98%      1
+  99%      3
+ 100%     33 (longest request)
+
+--- 第 2 轮  100 并发 5000 请求 ---
+Complete requests:      5000
+Failed requests:        41
+   (Connect: 0, Receive: 0, Length: 41, Exceptions: 0)
+Requests per second:    253.84 [#/sec] (mean)
+Time per request:       393.955 [ms] (mean)
+Time per request:       3.940 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%     22
+  90%     26
+  95%     26
+  98%     27
+  99%   5010
+ 100%  19415 (longest request)
+
+--- 第 3 轮  100 并发 5000 请求 ---
+Complete requests:      5000
+Failed requests:        44
+   (Connect: 0, Receive: 0, Length: 44, Exceptions: 0)
+Requests per second:    245.49 [#/sec] (mean)
+Time per request:       407.351 [ms] (mean)
+Time per request:       4.074 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%     27
+  90%     29
+  95%     30
+  98%     32
+  99%   5011
+ 100%  20059 (longest request)
+
+--- 第 4 轮  100 并发 5000 请求 ---
+Complete requests:      5000
+Failed requests:        44
+   (Connect: 0, Receive: 0, Length: 44, Exceptions: 0)
+Requests per second:    254.12 [#/sec] (mean)
+Time per request:       393.510 [ms] (mean)
+Time per request:       3.935 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%     22
+  90%     26
+  95%     27
+  98%     28
+  99%   5006
+ 100%  19390 (longest request)
+
+--- 第 5 轮  100 并发 5000 请求 ---
+Complete requests:      5000
+Failed requests:        37
+   (Connect: 0, Receive: 0, Length: 37, Exceptions: 0)
+Requests per second:    246.09 [#/sec] (mean)
+Time per request:       406.356 [ms] (mean)
+Time per request:       4.064 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%     20
+  90%     24
+  95%     24
+  98%     25
+  99%   5008
+ 100%  20037 (longest request)
+
+--- 第 6 轮  100 并发 5000 请求 ---
+Complete requests:      5000
+Failed requests:        33
+   (Connect: 0, Receive: 0, Length: 33, Exceptions: 0)
+Requests per second:    341.53 [#/sec] (mean)
+Time per request:       292.797 [ms] (mean)
+Time per request:       2.928 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%     18
+  90%     21
+  95%     22
+  98%     23
+  99%   5004
+ 100%  14357 (longest request)
+
+================================================
+ 六轮失败请求合计: 199
+================================================
+
+--- 服务端日志 ---
+[2026-09-26 16:19:24] [info] campus-schedule v0.1.0 启动
+[2026-09-26 16:19:24] [info] 配置: server=127.0.0.1:8080 db=campus@127.0.0.1:3306/campus_schedule pool=8 portal=mock@127.0.0.1:9090
+[2026-09-26 16:19:24] [info] MySQL 连接池就绪: 8 条连接 -> 127.0.0.1/campus_schedule
+[2026-09-26 16:19:24] [info] HTTP 服务已启动: http://127.0.0.1:8080
+[2026-09-26 16:19:24] [info] 试一下: curl http://127.0.0.1:8080/api/health
+
+服务已停止

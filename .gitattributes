@@ -1,0 +1,13 @@
+# 行尾统一成 LF。
+# 这个项目的脚本都在 WSL/Linux 里跑（bash scripts/xxx.sh），
+# Windows 上克隆时如果被自动转成 CRLF，bash 会直接报错。
+* text=auto eol=lf
+
+# Windows 上的双击脚本必须是 CRLF，否则 cmd.exe 可能解析异常
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# 二进制文件不做任何转换
+*.png binary
+*.jpg binary
+*.ico binary

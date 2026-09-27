@@ -1,0 +1,25 @@
+# 构建产物
+build/
+cmake-build-*/
+
+# 编辑器
+.cache/
+.vscode/
+.idea/
+compile_commands.json
+
+# 编译产物
+*.o
+*.a
+*.so
+*.out
+
+# 本地配置与数据
+.env
+*.log
+data/
+
+# 压测与排障的原始日志是「数据可复核」的证据，要进仓库
+!bench*.log
+!diagnose*.log
+!smoke_test.log

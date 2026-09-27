@@ -1,0 +1,231 @@
+时间: 2026-09-25 01:19:39
+CPU 核心: 12    内存: 5.8Gi
+ab 版本: This is ApacheBench, Version 2.3 <$Revision: 1903618 $>
+
+服务端默认配置：连接池 8 条，httplib 默认线程池
+
+########## A. 纯 HTTP 层（完全不经数据库）##########
+[2026-09-25 01:19:39] [info] MySQL 连接池就绪: 8 条连接 -> 127.0.0.1/campus_schedule
+[2026-09-25 01:19:39] [info] HTTP 服务已启动: http://127.0.0.1:8080
+--- A1  /api/version   并发 1    300 请求 ---
+Complete requests:      300
+Failed requests:        0
+Requests per second:    37.77 [#/sec] (mean)
+Time per request:       26.478 [ms] (mean)
+Time per request:       26.478 [ms] (mean, across all concurrent requests)
+  50%     43
+  66%     44
+  75%     44
+  80%     44
+  90%     44
+  95%     44
+  98%     47
+  99%     48
+ 100%     48 (longest request)
+
+--- A2  /api/version   并发 50  3000 请求 ---
+Complete requests:      3000
+Failed requests:        19
+Requests per second:    174.66 [#/sec] (mean)
+Time per request:       286.269 [ms] (mean)
+Time per request:       5.725 [ms] (mean, across all concurrent requests)
+  50%     44
+  66%     44
+  75%     48
+  80%    265
+  90%    457
+  95%    527
+  98%    528
+  99%   4966
+ 100%  10356 (longest request)
+
+--- A3  /api/version   并发 200 5000 请求 ---
+Complete requests:      5000
+Failed requests:        94
+Requests per second:    88.66 [#/sec] (mean)
+Time per request:       2255.718 [ms] (mean)
+Time per request:       11.279 [ms] (mean, across all concurrent requests)
+  50%     44
+  66%     48
+  75%     48
+  80%   1436
+  90%   2332
+  95%   2938
+  98%   5011
+  99%  26717
+ 100%  46263 (longest request)
+
+########## B. 完整数据库查询（纯查询接口）##########
+--- B1  /api/courses   并发 1    300 请求 ---
+Complete requests:      300
+Failed requests:        0
+Requests per second:    37.78 [#/sec] (mean)
+Time per request:       26.466 [ms] (mean)
+Time per request:       26.466 [ms] (mean, across all concurrent requests)
+  50%     42
+  66%     44
+  75%     44
+  80%     44
+  90%     44
+  95%     44
+  98%     44
+  99%     44
+ 100%     48 (longest request)
+
+--- B2  /api/courses   并发 10  1000 请求 ---
+Complete requests:      1000
+Failed requests:        0
+Requests per second:    370.01 [#/sec] (mean)
+Time per request:       27.026 [ms] (mean)
+Time per request:       2.703 [ms] (mean, across all concurrent requests)
+  50%     43
+  66%     44
+  75%     44
+  80%     44
+  90%     44
+  95%     47
+  98%     48
+  99%     48
+ 100%     48 (longest request)
+
+--- B3  /api/courses   并发 50  3000 请求 ---
+Complete requests:      3000
+Failed requests:        20
+Requests per second:    179.03 [#/sec] (mean)
+Time per request:       279.282 [ms] (mean)
+Time per request:       5.586 [ms] (mean, across all concurrent requests)
+  50%     44
+  66%     46
+  75%     48
+  80%     48
+  90%    481
+  95%    508
+  98%    525
+  99%   4967
+ 100%  10293 (longest request)
+
+--- B4  /api/courses   并发 200 5000 请求 ---
+Complete requests:      5000
+Failed requests:        94
+Requests per second:    89.99 [#/sec] (mean)
+Time per request:       2222.433 [ms] (mean)
+Time per request:       11.112 [ms] (mean, across all concurrent requests)
+  50%     44
+  66%     47
+  75%     48
+  80%   1871
+  90%   2317
+  95%   2365
+  98%   5012
+  99%  26007
+ 100%  44973 (longest request)
+
+########## C. 关闭 keep-alive 对比（看连接复用值不值）##########
+--- C1  /api/courses   并发 50  3000 请求（无 -k） ---
+Complete requests:      3000
+Failed requests:        0
+Requests per second:    11411.57 [#/sec] (mean)
+Time per request:       4.382 [ms] (mean)
+Time per request:       0.088 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%      1
+  90%      1
+  95%      2
+  98%      2
+  99%      3
+ 100%      4 (longest request)
+
+########## D. 直接压 MySQL，完全绕开后端 ##########
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+mysqlslap: Error when connecting to server: 1044 Access denied for user 'campus'@'localhost' to database 'mysqlslap'
+Benchmark
+	Average number of seconds to run all queries: 1.839 seconds
+	Minimum number of seconds to run all queries: 1.716 seconds
+	Maximum number of seconds to run all queries: 1.966 seconds
+	Number of clients running queries: 8
+	Average number of queries per client: 125
+
+
+########## E. 对照实验：连接池 8 -> 32 ##########
+[2026-09-25 01:22:37] [info] MySQL 连接池就绪: 32 条连接 -> 127.0.0.1/campus_schedule
+[2026-09-25 01:22:37] [info] HTTP 服务已启动: http://127.0.0.1:8080
+--- E1  /api/courses   并发 50  3000 请求（pool=32） ---
+Complete requests:      3000
+Failed requests:        19
+Requests per second:    180.66 [#/sec] (mean)
+Time per request:       276.761 [ms] (mean)
+Time per request:       5.535 [ms] (mean, across all concurrent requests)
+  50%     44
+  66%     44
+  75%     48
+  80%    168
+  90%    477
+  95%    513
+  98%    529
+  99%   4342
+ 100%   9680 (longest request)
+
+--- E2  /api/courses   并发 200 5000 请求（pool=32） ---
+Complete requests:      5000
+Failed requests:        94
+Requests per second:    89.00 [#/sec] (mean)
+Time per request:       2247.124 [ms] (mean)
+Time per request:       11.236 [ms] (mean, across all concurrent requests)
+  50%     44
+  66%     47
+  75%     48
+  80%   1068
+  90%   2321
+  95%   2535
+  98%   5011
+  99%  26039
+ 100%  45621 (longest request)
+
+########## 服务端日志（pool=32 那次）##########
+[2026-09-25 01:22:36] [info] campus-schedule v0.1.0 启动
+[2026-09-25 01:22:36] [info] 配置: server=127.0.0.1:8080 db=campus@127.0.0.1:3306/campus_schedule pool=32
+[2026-09-25 01:22:37] [info] MySQL 连接池就绪: 32 条连接 -> 127.0.0.1/campus_schedule
+[2026-09-25 01:22:37] [info] HTTP 服务已启动: http://127.0.0.1:8080
+[2026-09-25 01:22:37] [info] 试一下: curl http://127.0.0.1:8080/api/health
+
+完成

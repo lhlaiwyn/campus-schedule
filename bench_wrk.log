@@ -1,0 +1,52 @@
+时间: 2026-09-26 16:30:03
+环境: 12 vCPU / 5.8Gi 内存
+参数: 4 线程 / 100 连接 / 每轮 10s / 4 轮
+wrk 版本: wrk debian/4.1.0-4build2 [epoll] Copyright (C) 2012 Will Glozer
+
+=========== W1. keep-alive（wrk 默认就是长连接）===========
+服务 PID=948
+########## W1 keep-alive 连续 4 轮 ##########
+  [第1轮前] 服务端线程=12
+  第1轮                    RPS 16298.65    P99 ?          非2xx 0    无 socket 错误行
+  [第2轮前] 服务端线程=12
+  第2轮                    RPS 16897.45    P99 ?          非2xx 0    Socket errors: connect 0, read 0, write 0, timeout 100
+  [第3轮前] 服务端线程=12
+  第3轮                    RPS 15866.69    P99 ?          非2xx 0    Socket errors: connect 0, read 0, write 0, timeout 2
+  [第4轮前] 服务端线程=12
+  第4轮                    RPS 15751.84    P99 ?          非2xx 0    无 socket 错误行
+
+=========== W2. 关闭 keep-alive 作为对照 ===========
+########## W2 短连接连续 4 轮 ##########
+  [第1轮前] 服务端线程=12
+  第1轮                    RPS 11020.78    P99 ?          非2xx 0    无 socket 错误行
+  [第2轮前] 服务端线程=12
+  第2轮                    RPS 11933.11    P99 ?          非2xx 0    Socket errors: connect 0, read 1, write 0, timeout 36
+  [第3轮前] 服务端线程=12
+  第3轮                    RPS 10370.95    P99 ?          非2xx 0    无 socket 错误行
+  [第4轮前] 服务端线程=12
+  第4轮                    RPS 11400.13    P99 ?          非2xx 0    无 socket 错误行
+
+=========== W3. 每轮重启服务 + keep-alive ===========
+########## W3. 每轮重启服务 + keep-alive ##########
+  （已重启服务）
+  [第1轮前] 服务端线程=12
+  第1轮                    RPS 15454.04    P99 ?          非2xx 0    无 socket 错误行
+  （已重启服务）
+  [第2轮前] 服务端线程=12
+  第2轮                    RPS 15860.64    P99 ?          非2xx 0    无 socket 错误行
+  （已重启服务）
+  [第3轮前] 服务端线程=12
+  第3轮                    RPS 17114.98    P99 ?          非2xx 0    Socket errors: connect 0, read 0, write 0, timeout 100
+  （已重启服务）
+  [第4轮前] 服务端线程=12
+  第4轮                    RPS 15815.99    P99 ?          非2xx 0    无 socket 错误行
+
+
+--- 服务端日志 ---
+[2026-09-26 16:32:07] [info] campus-schedule v0.1.0 启动
+[2026-09-26 16:32:07] [info] 配置: server=127.0.0.1:8080 db=campus@127.0.0.1:3306/campus_schedule pool=8 portal=mock@127.0.0.1:9090
+[2026-09-26 16:32:07] [info] MySQL 连接池就绪: 8 条连接 -> 127.0.0.1/campus_schedule
+[2026-09-26 16:32:07] [info] HTTP 服务已启动: http://127.0.0.1:8080
+[2026-09-26 16:32:07] [info] 试一下: curl http://127.0.0.1:8080/api/health
+
+完成

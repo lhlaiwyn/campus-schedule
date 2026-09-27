@@ -1,0 +1,147 @@
+时间: 2026-09-25 01:25:47
+CPU 核心: 12    内存: 5.8Gi
+本次已开启 TCP_NODELAY + 线程池 64
+
+服务 PID=522
+
+########## 1. keep-alive，单并发（看单请求真实延迟）##########
+--- 1.1 /api/courses  并发 1    300 请求 ---
+Complete requests:      300
+Failed requests:        0
+Requests per second:    1916.72 [#/sec] (mean)
+Time per request:       0.522 [ms] (mean)
+Time per request:       0.522 [ms] (mean, across all concurrent requests)
+  50%      0
+  66%      1
+  75%      1
+  80%      1
+  90%      1
+  95%      1
+  98%      1
+  99%      1
+ 100%     10 (longest request)
+
+########## 2. keep-alive，50 并发（优化前：179 QPS / P50 44ms）##########
+--- 2.1 /api/version  并发 50  3000 请求 ---
+Complete requests:      3000
+Failed requests:        15
+Requests per second:    298.31 [#/sec] (mean)
+Time per request:       167.609 [ms] (mean)
+Time per request:       3.352 [ms] (mean, across all concurrent requests)
+  50%      0
+  66%      0
+  75%      0
+  80%      3
+  90%      3
+  95%      3
+  98%      4
+  99%      4
+ 100%  10005 (longest request)
+
+--- 2.2 /api/courses  并发 50  3000 请求 ---
+Complete requests:      3000
+Failed requests:        0
+Requests per second:    11616.29 [#/sec] (mean)
+Time per request:       4.304 [ms] (mean)
+Time per request:       0.086 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%      1
+  90%      9
+  95%     13
+  98%     14
+  99%     14
+ 100%     16 (longest request)
+
+--- 2.3 /api/courses  并发 50 10000 请求 ---
+Complete requests:      10000
+Failed requests:        21
+Requests per second:    985.14 [#/sec] (mean)
+Time per request:       50.754 [ms] (mean)
+Time per request:       1.015 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%     11
+  90%     12
+  95%     12
+  98%     13
+  99%     13
+ 100%   9529 (longest request)
+
+########## 3. keep-alive，200 并发（优化前：89 QPS / P99 26s）##########
+--- 3.1 /api/courses  并发 200 5000 请求 ---
+Complete requests:      5000
+Failed requests:        0
+Requests per second:    10364.56 [#/sec] (mean)
+Time per request:       19.297 [ms] (mean)
+Time per request:       0.096 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%      1
+  90%      1
+  95%      1
+  98%      8
+  99%     23
+ 100%     39 (longest request)
+
+--- 3.2 /api/courses  并发 200 20000 请求 ---
+Complete requests:      20000
+Failed requests:        96
+Requests per second:    438.13 [#/sec] (mean)
+Time per request:       456.488 [ms] (mean)
+Time per request:       2.282 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%     48
+  90%     54
+  95%     54
+  98%     55
+  99%     57
+ 100%  44538 (longest request)
+
+########## 4. keep-alive，500 并发（压力上限）##########
+--- 4.1 /api/courses  并发 500 20000 请求 ---
+Complete requests:      20000
+Failed requests:        240
+Requests per second:    183.04 [#/sec] (mean)
+Time per request:       2731.612 [ms] (mean)
+Time per request:       5.463 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%     54
+  90%     55
+  95%     56
+  98%   5004
+  99%  19740
+ 100%  108156 (longest request)
+
+########## 5. 关闭 keep-alive 作为对照 ##########
+--- 5.1 /api/courses  并发 50  3000 请求（无 -k） ---
+Complete requests:      3000
+Failed requests:        0
+Requests per second:    12472.09 [#/sec] (mean)
+Time per request:       4.009 [ms] (mean)
+Time per request:       0.080 [ms] (mean, across all concurrent requests)
+  50%      1
+  66%      1
+  75%      1
+  80%      1
+  90%      1
+  95%      2
+  98%      2
+  99%      3
+ 100%      8 (longest request)
+
+########## 服务端日志 ##########
+[2026-09-25 01:25:47] [info] campus-schedule v0.1.0 启动
+[2026-09-25 01:25:47] [info] 配置: server=127.0.0.1:8080 db=campus@127.0.0.1:3306/campus_schedule pool=8
+[2026-09-25 01:25:47] [info] MySQL 连接池就绪: 8 条连接 -> 127.0.0.1/campus_schedule
+[2026-09-25 01:25:47] [info] HTTP 服务已启动: http://127.0.0.1:8080
+[2026-09-25 01:25:47] [info] 试一下: curl http://127.0.0.1:8080/api/health
+
+服务已停止

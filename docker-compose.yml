@@ -1,0 +1,43 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: campus-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_dev_only
+      MYSQL_DATABASE: campus_schedule
+      MYSQL_USER: campus
+      MYSQL_PASSWORD: campus_dev_2026
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mysql-data:/var/lib/mysql
+      # 首次启动时自动执行建表语句
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/10-schema.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "campus", "-pcampus_dev_2026"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  campus-server:
+    build: .
+    container_name: campus-server
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      CAMPUS_HOST: 0.0.0.0
+      CAMPUS_PORT: "8080"
+      CAMPUS_DB_HOST: mysql
+      CAMPUS_DB_PORT: "3306"
+      CAMPUS_DB_USER: campus
+      CAMPUS_DB_PASSWORD: campus_dev_2026
+      CAMPUS_DB_NAME: campus_schedule
+      CAMPUS_PORTAL_ADAPTER: mock
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql-data:
+

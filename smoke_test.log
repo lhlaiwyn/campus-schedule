@@ -1,0 +1,615 @@
+时间: 2026-09-27 20:57:09
+环境: 12 vCPU / 5.8Gi 内存
+
+===== 1/6 单元测试详情 =====
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 155 tests from 30 test suites.
+[----------] Global test environment set-up.
+[----------] 5 tests from Base64UrlTest
+[ RUN      ] Base64UrlTest.MatchesRfc4648Vectors
+[       OK ] Base64UrlTest.MatchesRfc4648Vectors (0 ms)
+[ RUN      ] Base64UrlTest.UsesUrlSafeAlphabet
+[       OK ] Base64UrlTest.UsesUrlSafeAlphabet (0 ms)
+[ RUN      ] Base64UrlTest.RoundTripsBinaryData
+[       OK ] Base64UrlTest.RoundTripsBinaryData (0 ms)
+[ RUN      ] Base64UrlTest.AcceptsPadding
+[       OK ] Base64UrlTest.AcceptsPadding (0 ms)
+[ RUN      ] Base64UrlTest.RejectsInvalidInput
+[       OK ] Base64UrlTest.RejectsInvalidInput (0 ms)
+[----------] 5 tests from Base64UrlTest (0 ms total)
+
+[----------] 2 tests from HmacTest
+[ RUN      ] HmacTest.MatchesReferenceValues
+[       OK ] HmacTest.MatchesReferenceValues (0 ms)
+[ RUN      ] HmacTest.DigestIsThirtyTwoBytes
+[       OK ] HmacTest.DigestIsThirtyTwoBytes (0 ms)
+[----------] 2 tests from HmacTest (0 ms total)
+
+[----------] 8 tests from JwtTest
+[ RUN      ] JwtTest.ProducesExactTokenMatchingReferenceImplementation
+[       OK ] JwtTest.ProducesExactTokenMatchingReferenceImplementation (0 ms)
+[ RUN      ] JwtTest.VerifiesOwnTokenAndExtractsClaims
+[       OK ] JwtTest.VerifiesOwnTokenAndExtractsClaims (0 ms)
+[ RUN      ] JwtTest.RejectsTamperedPayload
+[       OK ] JwtTest.RejectsTamperedPayload (0 ms)
+[ RUN      ] JwtTest.RejectsExpiredToken
+[       OK ] JwtTest.RejectsExpiredToken (0 ms)
+[ RUN      ] JwtTest.RejectsTokenSignedWithAnotherSecret
+[       OK ] JwtTest.RejectsTokenSignedWithAnotherSecret (0 ms)
+[ RUN      ] JwtTest.RejectsTokenClaimingAnotherAlgorithm
+[       OK ] JwtTest.RejectsTokenClaimingAnotherAlgorithm (0 ms)
+[ RUN      ] JwtTest.RejectsMalformedTokens
+[       OK ] JwtTest.RejectsMalformedTokens (0 ms)
+[ RUN      ] JwtTest.RefusesToSignWithShortSecretOrInvalidClaims
+[       OK ] JwtTest.RefusesToSignWithShortSecretOrInvalidClaims (0 ms)
+[----------] 8 tests from JwtTest (0 ms total)
+
+[----------] 5 tests from PortalSessionStoreTest
+[ RUN      ] PortalSessionStoreTest.StoresAndReturnsToken
+[       OK ] PortalSessionStoreTest.StoresAndReturnsToken (0 ms)
+[ RUN      ] PortalSessionStoreTest.ExpiredSessionIsRejectedAndDropped
+[       OK ] PortalSessionStoreTest.ExpiredSessionIsRejectedAndDropped (0 ms)
+[ RUN      ] PortalSessionStoreTest.MissingSessionFails
+[       OK ] PortalSessionStoreTest.MissingSessionFails (0 ms)
+[ RUN      ] PortalSessionStoreTest.RemoveAndPurge
+[       OK ] PortalSessionStoreTest.RemoveAndPurge (0 ms)
+[ RUN      ] PortalSessionStoreTest.IgnoresEmptyInput
+[       OK ] PortalSessionStoreTest.IgnoresEmptyInput (0 ms)
+[----------] 5 tests from PortalSessionStoreTest (0 ms total)
+
+[----------] 2 tests from AuthServiceTest
+[ RUN      ] AuthServiceTest.LoginIssuesTokenAndCachesPortalSession
+[       OK ] AuthServiceTest.LoginIssuesTokenAndCachesPortalSession (0 ms)
+[ RUN      ] AuthServiceTest.LoginFailureCachesNothing
+[       OK ] AuthServiceTest.LoginFailureCachesNothing (0 ms)
+[----------] 2 tests from AuthServiceTest (0 ms total)
+
+[----------] 4 tests from RateLimiterTest
+[ RUN      ] RateLimiterTest.AllowsBurstThenThrottles
+[       OK ] RateLimiterTest.AllowsBurstThenThrottles (0 ms)
+[ RUN      ] RateLimiterTest.RefillsOverTime
+[       OK ] RateLimiterTest.RefillsOverTime (0 ms)
+[ RUN      ] RateLimiterTest.KeysAreIndependent
+[       OK ] RateLimiterTest.KeysAreIndependent (0 ms)
+[ RUN      ] RateLimiterTest.EvictsOldKeysWhenMapGrows
+[       OK ] RateLimiterTest.EvictsOldKeysWhenMapGrows (0 ms)
+[----------] 4 tests from RateLimiterTest (0 ms total)
+
+[----------] 3 tests from InMemoryCacheStoreTest
+[ RUN      ] InMemoryCacheStoreTest.SetGetDel
+[       OK ] InMemoryCacheStoreTest.SetGetDel (0 ms)
+[ RUN      ] InMemoryCacheStoreTest.ExpiresAfterTtl
+[       OK ] InMemoryCacheStoreTest.ExpiresAfterTtl (0 ms)
+[ RUN      ] InMemoryCacheStoreTest.PurgesExpiredEntries
+[       OK ] InMemoryCacheStoreTest.PurgesExpiredEntries (0 ms)
+[----------] 3 tests from InMemoryCacheStoreTest (0 ms total)
+
+[----------] 1 test from CacheStatsTest
+[ RUN      ] CacheStatsTest.ComputesHitRate
+[       OK ] CacheStatsTest.ComputesHitRate (0 ms)
+[----------] 1 test from CacheStatsTest (0 ms total)
+
+[----------] 3 tests from CourseCodecTest
+[ RUN      ] CourseCodecTest.RoundTripsCourseList
+[       OK ] CourseCodecTest.RoundTripsCourseList (0 ms)
+[ RUN      ] CourseCodecTest.PreservesSourceField
+[       OK ] CourseCodecTest.PreservesSourceField (0 ms)
+[ RUN      ] CourseCodecTest.RejectsCorruptPayload
+[       OK ] CourseCodecTest.RejectsCorruptPayload (0 ms)
+[----------] 3 tests from CourseCodecTest (1 ms total)
+
+[----------] 8 tests from CachedCourseRepositoryTest
+[ RUN      ] CachedCourseRepositoryTest.MissThenHitWithoutTouchingDatabase
+[       OK ] CachedCourseRepositoryTest.MissThenHitWithoutTouchingDatabase (0 ms)
+[ RUN      ] CachedCourseRepositoryTest.WriteInvalidatesCache
+[       OK ] CachedCourseRepositoryTest.WriteInvalidatesCache (0 ms)
+[ RUN      ] CachedCourseRepositoryTest.UpdateInvalidatesBothOldAndNewSemester
+[       OK ] CachedCourseRepositoryTest.UpdateInvalidatesBothOldAndNewSemester (0 ms)
+[ RUN      ] CachedCourseRepositoryTest.DeleteInvalidatesCache
+[       OK ] CachedCourseRepositoryTest.DeleteInvalidatesCache (0 ms)
+[ RUN      ] CachedCourseRepositoryTest.TtlExpiryFallsBackToDatabase
+[       OK ] CachedCourseRepositoryTest.TtlExpiryFallsBackToDatabase (0 ms)
+[ RUN      ] CachedCourseRepositoryTest.CorruptCacheEntryIsDiscardedAndRefetched
+[2026-09-27 20:57:09.790] [warning] 缓存内容无法解析，已丢弃: 缓存内容不是合法 JSON: [json.exception.parse_error.101] parse error at line 1, column 1: syntax error while parsing value - invalid literal; last read: '�'
+[       OK ] CachedCourseRepositoryTest.CorruptCacheEntryIsDiscardedAndRefetched (0 ms)
+[ RUN      ] CachedCourseRepositoryTest.DisabledCachePassesThrough
+[       OK ] CachedCourseRepositoryTest.DisabledCachePassesThrough (0 ms)
+[ RUN      ] CachedCourseRepositoryTest.DoesNotCacheAllSemestersQuery
+[       OK ] CachedCourseRepositoryTest.DoesNotCacheAllSemestersQuery (0 ms)
+[----------] 8 tests from CachedCourseRepositoryTest (1 ms total)
+
+[----------] 5 tests from WeekRangeTest
+[ RUN      ] WeekRangeTest.EveryWeekCoversWholeRange
+[       OK ] WeekRangeTest.EveryWeekCoversWholeRange (0 ms)
+[ RUN      ] WeekRangeTest.OddWeeksSkipEvenWeeks
+[       OK ] WeekRangeTest.OddWeeksSkipEvenWeeks (0 ms)
+[ RUN      ] WeekRangeTest.EvenWeeksSkipOddWeeks
+[       OK ] WeekRangeTest.EvenWeeksSkipOddWeeks (0 ms)
+[ RUN      ] WeekRangeTest.NormalizeSwapsReversedRange
+[       OK ] WeekRangeTest.NormalizeSwapsReversedRange (0 ms)
+[ RUN      ] WeekRangeTest.NormalizeRejectsOutOfRange
+[       OK ] WeekRangeTest.NormalizeRejectsOutOfRange (0 ms)
+[----------] 5 tests from WeekRangeTest (0 ms total)
+
+[----------] 5 tests from CourseSessionTest
+[ RUN      ] CourseSessionTest.AcceptsReasonableValues
+[       OK ] CourseSessionTest.AcceptsReasonableValues (0 ms)
+[ RUN      ] CourseSessionTest.RejectsInvalidDayOfWeek
+[       OK ] CourseSessionTest.RejectsInvalidDayOfWeek (0 ms)
+[ RUN      ] CourseSessionTest.RejectsReversedPeriods
+[       OK ] CourseSessionTest.RejectsReversedPeriods (0 ms)
+[ RUN      ] CourseSessionTest.RejectsPeriodBeyondLimit
+[       OK ] CourseSessionTest.RejectsPeriodBeyondLimit (0 ms)
+[ RUN      ] CourseSessionTest.PeriodCountCountsConnectedPeriods
+[       OK ] CourseSessionTest.PeriodCountCountsConnectedPeriods (0 ms)
+[----------] 5 tests from CourseSessionTest (0 ms total)
+
+[----------] 4 tests from CourseTest
+[ RUN      ] CourseTest.WeeklyPeriodsSumsAllSessions
+[       OK ] CourseTest.WeeklyPeriodsSumsAllSessions (0 ms)
+[ RUN      ] CourseTest.ValidRequiresNameAndSemester
+[       OK ] CourseTest.ValidRequiresNameAndSemester (0 ms)
+[ RUN      ] CourseTest.IsSameCoursePrefersCourseCode
+[       OK ] CourseTest.IsSameCoursePrefersCourseCode (0 ms)
+[ RUN      ] CourseTest.IsSameCourseFallsBackToNameAndTeacher
+[       OK ] CourseTest.IsSameCourseFallsBackToNameAndTeacher (0 ms)
+[----------] 4 tests from CourseTest (0 ms total)
+
+[----------] 5 tests from TimeConflictTest
+[ RUN      ] TimeConflictTest.DetectsOverlapOnSameDay
+[       OK ] TimeConflictTest.DetectsOverlapOnSameDay (0 ms)
+[ RUN      ] TimeConflictTest.DifferentDayNeverConflicts
+[       OK ] TimeConflictTest.DifferentDayNeverConflicts (0 ms)
+[ RUN      ] TimeConflictTest.SeparatePeriodsDoNotConflict
+[       OK ] TimeConflictTest.SeparatePeriodsDoNotConflict (0 ms)
+[ RUN      ] TimeConflictTest.OddAndEvenWeeksDoNotConflict
+[       OK ] TimeConflictTest.OddAndEvenWeeksDoNotConflict (0 ms)
+[ RUN      ] TimeConflictTest.EveryWeekConflictsWithAnyParity
+[       OK ] TimeConflictTest.EveryWeekConflictsWithAnyParity (0 ms)
+[----------] 5 tests from TimeConflictTest (0 ms total)
+
+[----------] 5 tests from JsonConvertTest
+[ RUN      ] JsonConvertTest.RoundTripKeepsAllFields
+[       OK ] JsonConvertTest.RoundTripKeepsAllFields (0 ms)
+[ RUN      ] JsonConvertTest.RejectsUnknownParityValue
+[       OK ] JsonConvertTest.RejectsUnknownParityValue (0 ms)
+[ RUN      ] JsonConvertTest.DefaultsNewCoursesToManualSource
+[       OK ] JsonConvertTest.DefaultsNewCoursesToManualSource (0 ms)
+[ RUN      ] JsonConvertTest.PreservesExplicitSource
+[       OK ] JsonConvertTest.PreservesExplicitSource (0 ms)
+[ RUN      ] JsonConvertTest.RejectsNonArraySessions
+[       OK ] JsonConvertTest.RejectsNonArraySessions (0 ms)
+[----------] 5 tests from JsonConvertTest (0 ms total)
+
+[----------] 5 tests from Sha256Test
+[ RUN      ] Sha256Test.MatchesStandardVectors
+[       OK ] Sha256Test.MatchesStandardVectors (0 ms)
+[ RUN      ] Sha256Test.HandlesMultiBlockInput
+[       OK ] Sha256Test.HandlesMultiBlockInput (0 ms)
+[ RUN      ] Sha256Test.ProducesLowercaseHexOfFixedLength
+[       OK ] Sha256Test.ProducesLowercaseHexOfFixedLength (0 ms)
+[ RUN      ] Sha256Test.HashPasswordCombinesSaltAndPassword
+[       OK ] Sha256Test.HashPasswordCombinesSaltAndPassword (0 ms)
+[ RUN      ] Sha256Test.DifferentInputsProduceDifferentDigests
+[       OK ] Sha256Test.DifferentInputsProduceDifferentDigests (0 ms)
+[----------] 5 tests from Sha256Test (0 ms total)
+
+[----------] 4 tests from RouteTableTest
+[ RUN      ] RouteTableTest.MatchesEveryInterface
+[       OK ] RouteTableTest.MatchesEveryInterface (0 ms)
+[ RUN      ] RouteTableTest.CourseIdIsParsedAlongWithRoute
+[       OK ] RouteTableTest.CourseIdIsParsedAlongWithRoute (0 ms)
+[ RUN      ] RouteTableTest.WrongMethodOrUnknownPathIsNotFound
+[       OK ] RouteTableTest.WrongMethodOrUnknownPathIsNotFound (0 ms)
+[ RUN      ] RouteTableTest.CourseIdMustBeAllDigits
+[       OK ] RouteTableTest.CourseIdMustBeAllDigits (0 ms)
+[----------] 4 tests from RouteTableTest (0 ms total)
+
+[----------] 11 tests from DispatcherTest
+[ RUN      ] DispatcherTest.VersionReportsCurrentEngine
+[       OK ] DispatcherTest.VersionReportsCurrentEngine (0 ms)
+[ RUN      ] DispatcherTest.HealthReportsDegradedWithoutDatabase
+[       OK ] DispatcherTest.HealthReportsDegradedWithoutDatabase (0 ms)
+[ RUN      ] DispatcherTest.UnknownPathReturnsJson404WithPath
+[       OK ] DispatcherTest.UnknownPathReturnsJson404WithPath (0 ms)
+[ RUN      ] DispatcherTest.WrongMethodOnKnownPathIsNotRouted
+[       OK ] DispatcherTest.WrongMethodOnKnownPathIsNotRouted (0 ms)
+[ RUN      ] DispatcherTest.CourseIdMustBeNumeric
+[       OK ] DispatcherTest.CourseIdMustBeNumeric (0 ms)
+[ RUN      ] DispatcherTest.ProtectedRouteWithoutTokenReturns401
+[       OK ] DispatcherTest.ProtectedRouteWithoutTokenReturns401 (0 ms)
+[ RUN      ] DispatcherTest.ErrorBodyCodeEqualsHttpStatus
+[       OK ] DispatcherTest.ErrorBodyCodeEqualsHttpStatus (0 ms)
+[ RUN      ] DispatcherTest.ProtectedRouteWithForgedTokenReturns401
+[       OK ] DispatcherTest.ProtectedRouteWithForgedTokenReturns401 (0 ms)
+[ RUN      ] DispatcherTest.MissingBearerPrefixReturns401
+[       OK ] DispatcherTest.MissingBearerPrefixReturns401 (0 ms)
+[ RUN      ] DispatcherTest.ApiRequestHeaderLookupIsCaseInsensitive
+[       OK ] DispatcherTest.ApiRequestHeaderLookupIsCaseInsensitive (0 ms)
+[ RUN      ] DispatcherTest.ApiRequestQueryLookup
+[       OK ] DispatcherTest.ApiRequestQueryLookup (0 ms)
+[----------] 11 tests from DispatcherTest (0 ms total)
+
+[----------] 6 tests from ByteBufferTest
+[ RUN      ] ByteBufferTest.AppendAndRead
+[       OK ] ByteBufferTest.AppendAndRead (0 ms)
+[ RUN      ] ByteBufferTest.GrowsWhenNeeded
+[       OK ] ByteBufferTest.GrowsWhenNeeded (0 ms)
+[ RUN      ] ByteBufferTest.CompactReclaimsConsumedSpaceWithoutGrowing
+[       OK ] ByteBufferTest.CompactReclaimsConsumedSpaceWithoutGrowing (0 ms)
+[ RUN      ] ByteBufferTest.FindLocatesNeedleWithoutConsuming
+[       OK ] ByteBufferTest.FindLocatesNeedleWithoutConsuming (0 ms)
+[ RUN      ] ByteBufferTest.FindMissesWhenAbsentOrOversized
+[       OK ] ByteBufferTest.FindMissesWhenAbsentOrOversized (0 ms)
+[ RUN      ] ByteBufferTest.ClearResetsContentButKeepsCapacity
+[       OK ] ByteBufferTest.ClearResetsContentButKeepsCapacity (0 ms)
+[----------] 6 tests from ByteBufferTest (0 ms total)
+
+[----------] 11 tests from HttpRequestParserTest
+[ RUN      ] HttpRequestParserTest.ParsesSimpleGet
+[       OK ] HttpRequestParserTest.ParsesSimpleGet (0 ms)
+[ RUN      ] HttpRequestParserTest.ParsesQueryString
+[       OK ] HttpRequestParserTest.ParsesQueryString (0 ms)
+[ RUN      ] HttpRequestParserTest.NoQueryStringLeavesQueryEmpty
+[       OK ] HttpRequestParserTest.NoQueryStringLeavesQueryEmpty (0 ms)
+[ RUN      ] HttpRequestParserTest.QueryStringEdgeCases
+[       OK ] HttpRequestParserTest.QueryStringEdgeCases (0 ms)
+[ RUN      ] HttpRequestParserTest.HeaderLookupIsCaseInsensitive
+[       OK ] HttpRequestParserTest.HeaderLookupIsCaseInsensitive (0 ms)
+[ RUN      ] HttpRequestParserTest.ParsesBodyIncrementally
+[       OK ] HttpRequestParserTest.ParsesBodyIncrementally (0 ms)
+[ RUN      ] HttpRequestParserTest.KeepAliveSemantics
+[       OK ] HttpRequestParserTest.KeepAliveSemantics (0 ms)
+[ RUN      ] HttpRequestParserTest.RejectsMalformedRequestLine
+[       OK ] HttpRequestParserTest.RejectsMalformedRequestLine (0 ms)
+[ RUN      ] HttpRequestParserTest.RejectsHeaderWithoutColon
+[       OK ] HttpRequestParserTest.RejectsHeaderWithoutColon (0 ms)
+[ RUN      ] HttpRequestParserTest.RejectsNegativeContentLength
+[       OK ] HttpRequestParserTest.RejectsNegativeContentLength (0 ms)
+[ RUN      ] HttpRequestParserTest.ResetAllowsReuse
+[       OK ] HttpRequestParserTest.ResetAllowsReuse (0 ms)
+[----------] 11 tests from HttpRequestParserTest (0 ms total)
+
+[----------] 1 test from PercentDecodeTest
+[ RUN      ] PercentDecodeTest.DecodesPercentAndPlus
+[       OK ] PercentDecodeTest.DecodesPercentAndPlus (0 ms)
+[----------] 1 test from PercentDecodeTest (0 ms total)
+
+[----------] 1 test from ParseRequestTargetTest
+[ RUN      ] ParseRequestTargetTest.SplitsPathAndQuery
+[       OK ] ParseRequestTargetTest.SplitsPathAndQuery (0 ms)
+[----------] 1 test from ParseRequestTargetTest (0 ms total)
+
+[----------] 5 tests from TimerWheelTest
+[ RUN      ] TimerWheelTest.FiresWithinOneRevolutionAndNeverEarly
+[       OK ] TimerWheelTest.FiresWithinOneRevolutionAndNeverEarly (0 ms)
+[ RUN      ] TimerWheelTest.CancelRemovesTimer
+[       OK ] TimerWheelTest.CancelRemovesTimer (0 ms)
+[ RUN      ] TimerWheelTest.RescheduleUpdatesDeadline
+[       OK ] TimerWheelTest.RescheduleUpdatesDeadline (0 ms)
+[ RUN      ] TimerWheelTest.HandlesClockGoingBackwards
+[       OK ] TimerWheelTest.HandlesClockGoingBackwards (0 ms)
+[ RUN      ] TimerWheelTest.FiresAllDueTimers
+[       OK ] TimerWheelTest.FiresAllDueTimers (0 ms)
+[----------] 5 tests from TimerWheelTest (0 ms total)
+
+[----------] 15 tests from PortalJsonTest
+[ RUN      ] PortalJsonTest.ParsesCaptchaChallenge
+[       OK ] PortalJsonTest.ParsesCaptchaChallenge (0 ms)
+[ RUN      ] PortalJsonTest.RejectsCaptchaWithoutSalt
+[       OK ] PortalJsonTest.RejectsCaptchaWithoutSalt (0 ms)
+[ RUN      ] PortalJsonTest.RejectsMalformedCaptchaBody
+[       OK ] PortalJsonTest.RejectsMalformedCaptchaBody (0 ms)
+[ RUN      ] PortalJsonTest.ParsesTokenFromLoginResponse
+[       OK ] PortalJsonTest.ParsesTokenFromLoginResponse (0 ms)
+[ RUN      ] PortalJsonTest.RejectsLoginResponseWithoutToken
+[       OK ] PortalJsonTest.RejectsLoginResponseWithoutToken (0 ms)
+[ RUN      ] PortalJsonTest.ParsesScheduleEntries
+[       OK ] PortalJsonTest.ParsesScheduleEntries (0 ms)
+[ RUN      ] PortalJsonTest.AcceptsEmptySchedule
+[       OK ] PortalJsonTest.AcceptsEmptySchedule (0 ms)
+[ RUN      ] PortalJsonTest.RejectsMissingEntriesArray
+[       OK ] PortalJsonTest.RejectsMissingEntriesArray (0 ms)
+[ RUN      ] PortalJsonTest.RejectsEntryWithoutCourseName
+[       OK ] PortalJsonTest.RejectsEntryWithoutCourseName (0 ms)
+[ RUN      ] PortalJsonTest.RejectsEntryWithoutWeeksText
+[       OK ] PortalJsonTest.RejectsEntryWithoutWeeksText (0 ms)
+[ RUN      ] PortalJsonTest.RejectsInvalidDayOfWeek
+[       OK ] PortalJsonTest.RejectsInvalidDayOfWeek (0 ms)
+[ RUN      ] PortalJsonTest.RejectsReversedPeriods
+[       OK ] PortalJsonTest.RejectsReversedPeriods (0 ms)
+[ RUN      ] PortalJsonTest.ErrorMessageMentionsEntryIndex
+[       OK ] PortalJsonTest.ErrorMessageMentionsEntryIndex (0 ms)
+[ RUN      ] PortalJsonTest.ExtractsMessageFromErrorBody
+[       OK ] PortalJsonTest.ExtractsMessageFromErrorBody (0 ms)
+[ RUN      ] PortalJsonTest.FallsBackWhenBodyIsNotJson
+[       OK ] PortalJsonTest.FallsBackWhenBodyIsNotJson (0 ms)
+[----------] 15 tests from PortalJsonTest (0 ms total)
+
+[----------] 4 tests from WeekParserTest
+[ RUN      ] WeekParserTest.ParsesPlainRange
+[       OK ] WeekParserTest.ParsesPlainRange (0 ms)
+[ RUN      ] WeekParserTest.ParsesOddAndEvenParity
+[       OK ] WeekParserTest.ParsesOddAndEvenParity (0 ms)
+[ RUN      ] WeekParserTest.ParsesSingleWeek
+[       OK ] WeekParserTest.ParsesSingleWeek (0 ms)
+[ RUN      ] WeekParserTest.RejectsUnsupportedOrInvalidText
+[       OK ] WeekParserTest.RejectsUnsupportedOrInvalidText (0 ms)
+[----------] 4 tests from WeekParserTest (0 ms total)
+
+[----------] 5 tests from MockPortalAdapterTest
+[ RUN      ] MockPortalAdapterTest.LoginRejectsShortPassword
+[       OK ] MockPortalAdapterTest.LoginRejectsShortPassword (0 ms)
+[ RUN      ] MockPortalAdapterTest.LoginThenFetchSchedule
+[       OK ] MockPortalAdapterTest.LoginThenFetchSchedule (0 ms)
+[ RUN      ] MockPortalAdapterTest.RejectsWrongPasswordAndUnknownStudent
+[       OK ] MockPortalAdapterTest.RejectsWrongPasswordAndUnknownStudent (0 ms)
+[ RUN      ] MockPortalAdapterTest.FetchFailsWithUnknownToken
+[       OK ] MockPortalAdapterTest.FetchFailsWithUnknownToken (0 ms)
+[ RUN      ] MockPortalAdapterTest.LogoutInvalidatesToken
+[       OK ] MockPortalAdapterTest.LogoutInvalidatesToken (0 ms)
+[----------] 5 tests from MockPortalAdapterTest (0 ms total)
+
+[----------] 2 tests from AdapterRegistryTest
+[ RUN      ] AdapterRegistryTest.CreatesRegisteredAdapter
+[       OK ] AdapterRegistryTest.CreatesRegisteredAdapter (0 ms)
+[ RUN      ] AdapterRegistryTest.ReturnsNullForUnknownName
+[       OK ] AdapterRegistryTest.ReturnsNullForUnknownName (0 ms)
+[----------] 2 tests from AdapterRegistryTest (0 ms total)
+
+[----------] 6 tests from ScheduleConverterTest
+[ RUN      ] ScheduleConverterTest.MergesSessionsOfSameCourse
+[       OK ] ScheduleConverterTest.MergesSessionsOfSameCourse (0 ms)
+[ RUN      ] ScheduleConverterTest.SortsSessionsByTime
+[       OK ] ScheduleConverterTest.SortsSessionsByTime (0 ms)
+[ RUN      ] ScheduleConverterTest.FailsOnUnparsableWeeksAndNamesTheCourse
+[       OK ] ScheduleConverterTest.FailsOnUnparsableWeeksAndNamesTheCourse (0 ms)
+[ RUN      ] ScheduleConverterTest.RejectsEmptyCourseNameAndSemester
+[       OK ] ScheduleConverterTest.RejectsEmptyCourseNameAndSemester (0 ms)
+[ RUN      ] ScheduleConverterTest.MarksConvertedCoursesAsPortalSourced
+[       OK ] ScheduleConverterTest.MarksConvertedCoursesAsPortalSourced (0 ms)
+[ RUN      ] ScheduleConverterTest.RejectsReversedPeriods
+[       OK ] ScheduleConverterTest.RejectsReversedPeriods (0 ms)
+[----------] 6 tests from ScheduleConverterTest (0 ms total)
+
+[----------] 8 tests from ChangeDetectorTest
+[ RUN      ] ChangeDetectorTest.NoChangeProducesEmptyList
+[       OK ] ChangeDetectorTest.NoChangeProducesEmptyList (0 ms)
+[ RUN      ] ChangeDetectorTest.DetectsRoomChange
+[       OK ] ChangeDetectorTest.DetectsRoomChange (0 ms)
+[ RUN      ] ChangeDetectorTest.DetectsTimeChange
+[       OK ] ChangeDetectorTest.DetectsTimeChange (0 ms)
+[ RUN      ] ChangeDetectorTest.DetectsTeacherChange
+[       OK ] ChangeDetectorTest.DetectsTeacherChange (0 ms)
+[ RUN      ] ChangeDetectorTest.DetectsSuspension
+[       OK ] ChangeDetectorTest.DetectsSuspension (0 ms)
+[ RUN      ] ChangeDetectorTest.DetectsNewAndRemovedCourses
+[       OK ] ChangeDetectorTest.DetectsNewAndRemovedCourses (0 ms)
+[ RUN      ] ChangeDetectorTest.DetectChangesIsDeterministic
+[       OK ] ChangeDetectorTest.DetectChangesIsDeterministic (0 ms)
+[ RUN      ] ChangeDetectorTest.DescribesChangesInReadableText
+[       OK ] ChangeDetectorTest.DescribesChangesInReadableText (0 ms)
+[----------] 8 tests from ChangeDetectorTest (0 ms total)
+
+[----------] 6 tests from SyncServiceTest
+[ RUN      ] SyncServiceTest.FirstSyncInsertsEverything
+[       OK ] SyncServiceTest.FirstSyncInsertsEverything (0 ms)
+[ RUN      ] SyncServiceTest.SecondSyncUpdatesInsteadOfDuplicating
+[       OK ] SyncServiceTest.SecondSyncUpdatesInsteadOfDuplicating (0 ms)
+[ RUN      ] SyncServiceTest.BadCredentialsDoNotWriteAnything
+[       OK ] SyncServiceTest.BadCredentialsDoNotWriteAnything (0 ms)
+[ RUN      ] SyncServiceTest.RejectsEmptySemester
+[       OK ] SyncServiceTest.RejectsEmptySemester (0 ms)
+[ RUN      ] SyncServiceTest.MarksSyncedCoursesAsPortalSourced
+[       OK ] SyncServiceTest.MarksSyncedCoursesAsPortalSourced (0 ms)
+[ RUN      ] SyncServiceTest.ManualCoursesAreNotReportedAsRemoved
+[       OK ] SyncServiceTest.ManualCoursesAreNotReportedAsRemoved (0 ms)
+[----------] 6 tests from SyncServiceTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 155 tests from 30 test suites ran. (7 ms total)
+[  PASSED  ] 155 tests.
+
+===== 2/6 启动服务 =====
+服务已启动，PID=612
+引擎自检: {"httpEngine":"net","version":"0.1.0"}
+
+===== 3/6 公开接口 =====
+--- GET /api/health ---
+{"cacheBackend":"redis","cacheEnabled":true,"cacheHitRate":0.0,"cacheHits":0,"cacheInvalidations":0,"cacheMisses":0,"dbPoolIdle":8,"dbPoolSize":8,"service":"campus-schedule","status":"ok","version":"0.1.0"}
+--- GET /api/version ---
+{"cxxStandard":202002,"httpEngine":"net","service":"campus-schedule","version":"0.1.0"}
+
+===== 4/6 鉴权 =====
+--- 不带 token 访问受保护接口（应 401）---
+{"code":401,"error":"unauthorized","message":"缺少 Authorization: Bearer <token> 请求头，请先调用 /api/auth/login"}
+HTTP 401
+--- 伪造 token（应 401）---
+{"code":401,"error":"unauthorized","message":"JWT 签名校验失败"}
+HTTP 401
+--- Authorization 格式不对（应 401）---
+{"code":401,"error":"unauthorized","message":"缺少 Authorization: Bearer <token> 请求头，请先调用 /api/auth/login"}
+HTTP 401
+--- 登录：密码错误（应 400，并透出教务系统的原因）---
+{"code":400,"error":"invalid_argument","message":"学号或密码错误（演示账号 2024001 / secret123）"}
+HTTP 400
+--- 登录：成功 ---
+{"expiresAt":1790517431,"expiresIn":3600,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3OTA1MTc0MzEsImlhdCI6MTc5MDUxMzgzMSwic3ViIjoiMjAyNDAwMSJ9.SMU0G4PSTvDecYbVRPfmpIq-C218RHBb7f-jQcnekeo","tokenType":"Bearer"}
+  [OK]   拿到 JWT，长度 149
+--- 带 token 访问（应 200）---
+HTTP 200
+
+===== 5/6 业务接口（带 token）=====
+--- 清理上一次运行留下的数据 ---
+已清理
+
+--- POST /api/courses 新增一门课 ---
+{"code":"CS2001","credits":3.5,"id":109,"name":"操作系统","semester":"2026-2027-1","sessions":[{"dayOfWeek":2,"endPeriod":4,"id":182,"location":"教学楼A301","periodCount":2,"startPeriod":3,"teacher":"张老师","weeks":{"from":1,"parity":0,"text":"1-16周每周","to":16}}],"source":"manual","teacher":"张老师","weeklyPeriods":2}
+（新建课程 id = 109）
+
+--- POST 再新增一门（数据结构，单周）---
+{"code":"CS2002","credits":4.0,"id":110,"name":"数据结构","semester":"2026-2027-1","sessions":[{"dayOfWeek":4,"endPeriod":2,"id":183,"location":"教学楼B102","periodCount":2,"startPeriod":1,"teacher":"李老师","weeks":{"from":1,"parity":1,"text":"1-16周单周","to":16}}],"source":"manual","teacher":"李老师","weeklyPeriods":2}
+
+--- 重复课程号（唯一键冲突，应 409）---
+{"code":409,"error":"conflict","message":"课程号 CS2001 在该学期已存在（唯一键冲突）"}
+HTTP 409
+--- GET /api/courses?semester=2026-2027-1 ---
+{"items":[{"code":"CS2001","credits":3.5,"id":109,"name":"操作系统","semester":"2026-2027-1","sessions":[{"dayOfWeek":2,"endPeriod":4,"id":182,"location":"教学楼A301","periodCount":2,"startPeriod":3,"teacher":"张老师","weeks":{"from":1,"parity":0,"text":"1-16周每周","to":16}}],"source":"manual","teacher":"张老师","weeklyPeriods":2},{"code":"CS2002","credits":4.0,"id":110,"name":"数据结构","semester":"2026-2027-1","sessions":[{"dayOfWeek":4,"endPeriod":2,"id":183,"location":"教学楼B102","periodCount":2,"startPeriod":1,"teacher":"李老师","weeks":{"from":1,"parity":1,"text":"1-16周单周","to":16}}],"source":"manual","teacher":"李老师","weeklyPeriods":2}],"total":2}
+
+--- GET /api/courses/109（用新建的 id，不写死 1）---
+{"code":"CS2001","credits":3.5,"id":109,"name":"操作系统","semester":"2026-2027-1","sessions":[{"dayOfWeek":2,"endPeriod":4,"id":182,"location":"教学楼A301","periodCount":2,"startPeriod":3,"teacher":"张老师","weeks":{"from":1,"parity":0,"text":"1-16周每周","to":16}}],"source":"manual","teacher":"张老师","weeklyPeriods":2}
+
+--- 参数校验：空课程名（应 400）---
+HTTP 400
+--- 时间冲突：同一天同一节（应 400，并给出具体冲突位置）---
+{"code":400,"error":"invalid_argument","message":"课程内部存在时间冲突: 周一 1-16周每周 第1-2节 与 周一 1-16周每周 第2-3节"}
+HTTP 400
+--- 查询不存在的课程（应 404）---
+HTTP 404
+--- 访问不存在的接口（应 404）---
+{"code":404,"error":"not_found","message":"接口不存在","path":"/api/nope"}
+
+--- 缓存效果验证 ---
+  读取前: {"cacheBackend":"redis","cacheHits":0,"cacheMisses":1,"cacheHitRate":0.0}
+  三次读取后: {"cacheBackend":"redis","cacheHits":3,"cacheMisses":1,"cacheHitRate":0.75,"cacheInvalidations":9}
+  [OK]   缓存生效：命中数 0 -> 3
+--- 写操作之后缓存应失效，下一次读会重新查库 ---
+  [OK]   写操作让缓存失效：失效次数 9 -> 10
+
+--- POST /api/sync（mock 适配器，本地已有 CS2001/CS2002，预期更新 2 + 新增 1）---
+{"adapter":"mock","changeCount":3,"changes":[{"course":"操作系统","detail":"新增课程","type":"新增课程"},{"course":"数据结构","detail":"新增课程","type":"新增课程"},{"course":"计算机网络","detail":"新增课程","type":"新增课程"}],"courses":3,"fetchedEntries":3,"inserted":1,"semester":"2026-2027-1","updated":2}
+
+--- POST /api/sync 再同步一次（课表没变，预期变动 0）---
+{"adapter":"mock","changeCount":0,"changes":[],"courses":3,"fetchedEntries":3,"inserted":0,"semester":"2026-2027-1","updated":3}
+
+--- 启动模拟教务系统（独立进程）---
+  [OK]   模拟教务系统已启动，PID=696
+--- GET 教务系统验证码接口 ---
+{"captchaId":"captcha-1","captchaText":"8A2F","note":"这是测试替身，验证码固定为 8A2F","salt":"jwgl-salt:"}
+
+--- 用 http 适配器登录（真实跨进程 HTTP + sha256 密码哈希）---
+{"expiresAt":1790517434,"expiresIn":3600,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3OTA1MTc0MzQsImlhdCI6MTc5MDUxMzgzNCwic3ViIjoiMjAyNDAwMSJ9.1WiTjxe-jMpRJqS_kUtAqwEb62GnfHjaC10fGZ61kFM","tokenType":"Bearer"}
+
+--- http 适配器同步课表（预期新增 3 门）---
+{"adapter":"http","changeCount":3,"changes":[{"course":"操作系统","detail":"新增课程","type":"新增课程"},{"course":"数据结构","detail":"新增课程","type":"新增课程"},{"course":"计算机网络","detail":"新增课程","type":"新增课程"}],"courses":3,"fetchedEntries":3,"inserted":3,"semester":"2026-2027-3","updated":0}
+
+--- 用 mock 的 token 去走 http 适配器（会话按适配器隔离，应 401）---
+{"adapter":"http","changeCount":0,"changes":[],"courses":3,"fetchedEntries":3,"inserted":0,"semester":"2026-2027-3","updated":3}
+HTTP 200
+--- http 适配器 + 错误密码登录（应 400）---
+{"code":400,"error":"invalid_argument","message":"密码错误"}
+HTTP 400
+--- http 适配器 + 不存在的学号（应 400）---
+{"code":400,"error":"invalid_argument","message":"学号不存在（演示账号为 2024001）"}
+HTTP 400
+
+模拟教务系统已停止，其日志：
+[2026-09-27 20:57:12] [info] 模拟教务系统启动: http://127.0.0.1:9090
+[2026-09-27 20:57:12] [info] 演示账号 2024001 / secret123，验证码固定 8A2F，密码以 sha256(salt+password) 提交
+
+--- 自研 HTTP 服务器（epoll）冒烟测试 ---
+  4 线程 + 水平触发（LT）
+    响应: {"method":"GET","path":"/first","query":"","hash":1469598103934665603}
+{"method":"GET","path":"/second","query":"","hash":1469598103934665603}
+  [OK]   4 线程 + 水平触发（LT）
+    服务端日志: 自研 HTTP 服务器已启动: http://127.0.0.1:8081（4 个 worker 线程，每次请求 CPU 工作量 0，水平触发 LT）
+  4 线程 + 边缘触发（ET）
+    响应: {"method":"GET","path":"/first","query":"","hash":1469598103934665603}
+{"method":"GET","path":"/second","query":"","hash":1469598103934665603}
+  [OK]   4 线程 + 边缘触发（ET）
+    服务端日志: 自研 HTTP 服务器已启动: http://127.0.0.1:8081（4 个 worker 线程，每次请求 CPU 工作量 0，边缘触发 ET）
+
+===== 断言汇总 =====
+  [OK]   公开接口 /api/health（HTTP 200）
+  [OK]   不带 token 访问受保护接口（HTTP 401）
+  [OK]   伪造 token（HTTP 401）
+  [OK]   Authorization 缺少 Bearer 前缀（HTTP 401）
+  [OK]   登录：密码错误（HTTP 400）
+  [OK]   登录：密码过短（HTTP 400）
+  [OK]   登录：学号不存在（HTTP 400）
+  [OK]   登录：成功（HTTP 200）
+  [OK]   登录：未知适配器（HTTP 400）
+  [OK]   新增课程：重复课程号（HTTP 409）
+  [OK]   新增课程：空课程名（HTTP 400）
+  [OK]   新增课程：课程内部时间冲突（HTTP 400）
+  [OK]   查询不存在的课程（HTTP 404）
+  [OK]   访问不存在的接口（HTTP 404）
+  [OK]   同步课表（mock 适配器）（HTTP 200）
+
+===== 断言结果：通过 19 项，失败 0 项 =====
+
+===== 6/6 短压测（确认并发可用性，不是性能基准）=====
+说明：准确的性能数据请跑 scripts/bench_wrk.sh；这里短跑容易受长尾影响。
+--- 50 并发 / 3000 请求（带 JWT）---
+Complete requests:      3000
+Failed requests:        0
+Requests per second:    9362.48 [#/sec] (mean)
+Time per request:       5.340 [ms] (mean)
+Time per request:       0.107 [ms] (mean, across all concurrent requests)
+  50%      4
+  66%      5
+  75%      6
+  80%      8
+  90%      9
+  95%     12
+  98%     19
+  99%     21
+ 100%     31 (longest request)
+
+===== 限流验证（放在最后，避免影响前面的用例）=====
+--- 对写接口连打 80 次（突发 40 / 每秒补 20，应出现 429）---
+  状态码 400: 45 次
+  状态码 429: 35 次
+
+--- 服务端日志 ---
+[2026-09-27 20:57:09] [info] campus-schedule v0.1.0 启动
+[2026-09-27 20:57:09] [info] 配置: server=127.0.0.1:8080 engine=net(workers=auto,LT) db=campus@127.0.0.1:3306/campus_schedule pool=8 portal=mock@127.0.0.1:9090 auth=ttl3600s(默认密钥!) rateLimit=20/s burst=40 cache=on@127.0.0.1:6379 ttl=300s
+[2026-09-27 20:57:09] [warning] 正在用内置的开发密钥签发 JWT，上线前请设置 CAMPUS_AUTH_SECRET
+[2026-09-27 20:57:09] [info] 已加载教务适配器 2 个
+[2026-09-27 20:57:09] [info] MySQL 连接池就绪: 8 条连接 -> 127.0.0.1/campus_schedule
+[2026-09-27 20:57:09] [info] 课表缓存已启用: redis://127.0.0.1:6379 TTL=300s
+[2026-09-27 20:57:09] [info] HTTP 服务已启动（引擎: 自研 epoll，12 个 worker，水平触发 LT）: http://127.0.0.1:8080
+[2026-09-27 20:57:09] [info] 试一下: curl http://127.0.0.1:8080/api/health
+[2026-09-27 20:57:11] [info] 用户登录成功: 学号=2024001 适配器=mock
+[2026-09-27 20:57:12] [info] 课表同步完成: 学号=2024001 adapter=mock 学期=2026-2027-1 拉取 3 条 -> 3 门课，新增 1，更新 2，变动 3 项
+[2026-09-27 20:57:12] [info] 课表同步完成: 学号=2024001 adapter=mock 学期=2026-2027-1 拉取 3 条 -> 3 门课，新增 0，更新 3，变动 0 项
+[2026-09-27 20:57:14] [info] 用户登录成功: 学号=2024001 适配器=http
+[2026-09-27 20:57:14] [info] 课表同步完成: 学号=2024001 adapter=http 学期=2026-2027-3 拉取 3 条 -> 3 门课，新增 3，更新 0，变动 3 项
+[2026-09-27 20:57:14] [info] 课表同步完成: 学号=2024001 adapter=http 学期=2026-2027-3 拉取 3 条 -> 3 门课，新增 0，更新 3，变动 0 项
+[2026-09-27 20:57:19] [info] 用户登录成功: 学号=2024001 适配器=mock
+[2026-09-27 20:57:19] [info] 课表同步完成: 学号=2024001 adapter=mock 学期=2026-2027-1 拉取 3 条 -> 3 门课，新增 0，更新 3，变动 0 项
+
+===== 7/7 双引擎一致性（同一套业务代码，两个 HTTP 引擎分别跑一遍）=====
+说明：路由、鉴权、JSON 转换都在 api/dispatcher.cpp 里，与 HTTP 库无关。
+      这里用同一组断言分别打「自研 epoll 网络库」和「cpp-httplib 对照组」，
+      确认两边行为一致，也确认默认引擎确实是自研实现（拿 /api/version 自检）。
+
+  [OK]   net：/api/version 上报 httpEngine=net, workers=4
+    启动日志: [2026-09-27 20:57:20] [info] campus-schedule v0.1.0 启动
+  [OK]   net 探活 /api/health（HTTP 200）
+  [OK]   net 不带 token 访问受保护接口（HTTP 401）
+  [OK]   net 访问不存在的接口（HTTP 404）
+  [OK]   net 路径参数不是数字（HTTP 404）
+  [OK]   net 带 token 查询课表（走真实查库）（HTTP 200）
+  [OK]   net 查询不存在的课程（HTTP 404）
+  [OK]   net 请求体 JSON 非法（应 400）（HTTP 400）
+  [OK]   net：POST 新增课程成功（id=118）
+  [OK]   net 删除刚建的课程（HTTP 200）
+  [OK]   net：1.2KB 请求体（触发 Expect: 100-continue）0.000396s 内返回 400
+
+  [OK]   httplib：/api/version 上报 httpEngine=httplib
+    启动日志: [2026-09-27 20:57:26] [info] campus-schedule v0.1.0 启动
+  [OK]   httplib 探活 /api/health（HTTP 200）
+  [OK]   httplib 不带 token 访问受保护接口（HTTP 401）
+  [OK]   httplib 访问不存在的接口（HTTP 404）
+  [OK]   httplib 路径参数不是数字（HTTP 404）
+  [OK]   httplib 带 token 查询课表（走真实查库）（HTTP 200）
+  [OK]   httplib 查询不存在的课程（HTTP 404）
+  [OK]   httplib 请求体 JSON 非法（应 400）（HTTP 400）
+  [OK]   httplib：POST 新增课程成功（id=119）
+  [OK]   httplib 删除刚建的课程（HTTP 200）
+  [OK]   httplib：1.2KB 请求体（触发 Expect: 100-continue）0.000404s 内返回 400
+
+===== 双引擎合计：通过 41 项，失败 0 项 =====
+
+完成

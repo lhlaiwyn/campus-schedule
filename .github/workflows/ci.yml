@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 安装依赖
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake ninja-build pkg-config \
+            libcpp-httplib-dev libspdlog-dev nlohmann-json3-dev \
+            libmysqlclient-dev libhiredis-dev libssl-dev libgtest-dev
+
+      - name: 配置与构建
+        run: |
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake --build build
+
+      - name: 运行单元测试
+        run: ctest --test-dir build --output-on-failure
+
+      - name: 检查关键产物
+        run: |
+          test -x build/campus_server
+          test -x build/mock_portal
+          test -x build/net_server
+          test -x build/campus_tests
