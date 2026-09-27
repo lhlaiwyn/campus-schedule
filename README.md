@@ -1,10 +1,18 @@
 # campus-schedule 校园课表服务端
 
+[![CI](https://github.com/lhlaiwyn/campus-schedule/actions/workflows/ci.yml/badge.svg)](https://github.com/lhlaiwyn/campus-schedule/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![C++20](https://img.shields.io/badge/C%2B%2B-20-blue.svg)](#)
+
 用 C++20 写的课表后端服务。解决的实际问题是：学校教务系统没有对外开放接口，
 每次查课表都要重新登录，移动端体验很差。
 
 服务端提供 RESTful 接口，可以从教务系统同步课表、检测调课变动、把课表持久化到 MySQL，
 并配套一套单元测试和性能测试报告。
+
+**亮点速览**：自研 epoll 网络库（多 Reactor / SO_REUSEPORT / LT+ET）并接入主服务，
+业务层与 HTTP 库解耦；154 个单元测试 / 60 项端到端断言；
+[性能测试报告](docs/性能测试报告.md) 记录了从 179 QPS 瓶颈定位到两个引擎同机对比的完整过程。
 
 ## 技术栈
 
