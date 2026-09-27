@@ -447,6 +447,18 @@ check_status() {
         echo "    启动日志: $(head -1 "${log}")"
 
         check_status "${engine} 探活 /api/health" 200 "${BASE}/api/health"
+        check_status "${engine} 网页版课表看板首页" 200 "${BASE}/"
+        # 首页必须是 HTML：如果返回 JSON 或空响应，浏览器打开就是一片乱码
+        local index_type
+        index_type=$(curl -sS -o /dev/null -w '%{content_type}' "${BASE}/")
+        if [ "${index_type}" = "text/html; charset=utf-8" ] &&
+           curl -sS "${BASE}/" | grep -q '<!DOCTYPE html>'; then
+            ok "${engine}：首页返回 HTML（${index_type}）"
+            PASSED=$((PASSED + 1))
+        else
+            bad "${engine}：首页 Content-Type 是 ${index_type}，或内容不是 HTML"
+            FAILED=$((FAILED + 1))
+        fi
         check_status "${engine} 不带 token 访问受保护接口" 401 "${BASE}/api/courses"
         check_status "${engine} 访问不存在的接口" 404 "${BASE}/api/nope"
         check_status "${engine} 路径参数不是数字" 404 "${BASE}/api/courses/abc"
@@ -519,7 +531,7 @@ check_status() {
     check_engine net 4
     check_engine httplib ""
 
-    echo "===== 双引擎合计：通过 ${PASSED} 项，失败 ${FAILED} 项 ====="
+    echo "===== 最终合计（含前面的 19 项基础断言）：通过 ${PASSED} 项，失败 ${FAILED} 项 ====="
     if [ "${FAILED}" -ne 0 ]; then
         echo "!! 有断言未通过，请检查上面的 [失败] 行"
     fi

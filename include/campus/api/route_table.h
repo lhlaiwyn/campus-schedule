@@ -7,6 +7,8 @@ namespace campus {
 
 // 接口清单。一条路由 = 一个「方法 + 路径模式」。
 enum class Route {
+    kIndex,      // GET /  网页版课表看板
+    kFavicon,    // GET /favicon.ico  直接回 204，省掉浏览器控制台的 404 噪音
     kHealth,
     kVersion,
     kLogin,

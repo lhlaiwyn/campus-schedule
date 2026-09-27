@@ -48,6 +48,10 @@ void RegisterRoutes(httplib::Server& server, AppContext& ctx) {
         Handle(request, response, &ctx);
     };
 
+    // 根路径是网页版课表看板
+    server.Get("/", route);
+    server.Get("/index.html", route);
+    server.Get("/favicon.ico", route);
     server.Get("/api/health", route);
     server.Get("/api/version", route);
     server.Post("/api/auth/login", route);

@@ -10,6 +10,7 @@
 #include <spdlog/spdlog.h>
 
 #include "campus/domain/course_json.h"
+#include "campus/api/index_page.h"
 #include "campus/infra/clock.h"
 #include "campus/infra/jwt.h"
 #include "campus/portal/portal_types.h"
@@ -205,6 +206,22 @@ ApiResponse HandleVersion() {
         // 让调用方能看出这次跑的是哪个 HTTP 引擎，方便压测对比
         {"httpEngine", HttpEngineName()},
     });
+}
+
+// 网页版课表看板：把 HTML 直接返回给浏览器。
+// 页面里的所有数据都靠同源的 REST 接口拿，没有额外后门。
+ApiResponse HandleIndex() {
+    ApiResponse response;
+    response.content_type = "text/html; charset=utf-8";
+    response.body = kIndexHtml;
+    return response;
+}
+
+// 浏览器总会来要 favicon，回 204 比回 404 干净（也少一条误导性的错误日志）
+ApiResponse HandleFavicon() {
+    ApiResponse response;
+    response.status = 204;
+    return response;
 }
 
 // 登录：用教务系统凭据换本服务的 JWT。
@@ -420,6 +437,10 @@ ApiResponse DispatchRoute(const ApiRequest& request, AppContext& ctx) {
     // 路由判断在 api/route_table.cpp：两个 HTTP 引擎共用同一份规则
     const RouteMatch match = MatchRoute(request.method, request.path);
     switch (match.route) {
+        case Route::kIndex:
+            return HandleIndex();
+        case Route::kFavicon:
+            return HandleFavicon();
         case Route::kHealth:
             return HandleHealth(ctx);
         case Route::kVersion:

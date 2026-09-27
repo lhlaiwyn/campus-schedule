@@ -35,6 +35,19 @@ bool MatchCourseId(const std::string& path, std::int64_t& id) {
 RouteMatch MatchRoute(const std::string& method, const std::string& path) {
     RouteMatch match;
 
+    // 根路径给网页版课表看板；/index.html 也接受，方便直接敲地址
+    if (path == "/" || path == "/index.html") {
+        if (method == "GET") {
+            match.route = Route::kIndex;
+        }
+        return match;
+    }
+    if (path == "/favicon.ico") {
+        if (method == "GET") {
+            match.route = Route::kFavicon;
+        }
+        return match;
+    }
     if (path == "/api/health") {
         if (method == "GET") {
             match.route = Route::kHealth;

@@ -23,6 +23,9 @@ ApiRequest MakeRequest(const std::string& method, const std::string& path,
 // ---------- 路由表（纯函数，与 HTTP 引擎无关）----------
 
 TEST(RouteTableTest, MatchesEveryInterface) {
+    EXPECT_EQ(MatchRoute("GET", "/").route, Route::kIndex);
+    EXPECT_EQ(MatchRoute("GET", "/index.html").route, Route::kIndex);
+    EXPECT_EQ(MatchRoute("GET", "/favicon.ico").route, Route::kFavicon);
     EXPECT_EQ(MatchRoute("GET", "/api/health").route, Route::kHealth);
     EXPECT_EQ(MatchRoute("GET", "/api/version").route, Route::kVersion);
     EXPECT_EQ(MatchRoute("POST", "/api/auth/login").route, Route::kLogin);
@@ -48,7 +51,27 @@ TEST(RouteTableTest, WrongMethodOrUnknownPathIsNotFound) {
     EXPECT_EQ(MatchRoute("POST", "/api/courses/1").route, Route::kNotFound);
     EXPECT_EQ(MatchRoute("GET", "/api").route, Route::kNotFound);
     EXPECT_EQ(MatchRoute("GET", "/api/nope").route, Route::kNotFound);
+    EXPECT_EQ(MatchRoute("POST", "/").route, Route::kNotFound);
     EXPECT_EQ(MatchRoute("", "").route, Route::kNotFound);
+}
+
+TEST(DispatcherTest, IndexServesHtmlDashboard) {
+    AppContext ctx;
+    const ApiResponse response = DispatchRequest(MakeRequest("GET", "/"), ctx);
+
+    EXPECT_EQ(response.status, 200);
+    EXPECT_EQ(response.content_type, "text/html; charset=utf-8");
+    EXPECT_NE(response.body.find("<!DOCTYPE html>"), std::string::npos);
+    // 页面必须是从本服务自己的接口取数据，不能依赖外网 CDN
+    EXPECT_NE(response.body.find("/api/courses"), std::string::npos);
+    EXPECT_EQ(response.body.find("http://cdn"), std::string::npos);
+}
+
+TEST(DispatcherTest, FaviconIsNoContent) {
+    AppContext ctx;
+    const ApiResponse response = DispatchRequest(MakeRequest("GET", "/favicon.ico"), ctx);
+    EXPECT_EQ(response.status, 204);
+    EXPECT_TRUE(response.body.empty());
 }
 
 TEST(RouteTableTest, CourseIdMustBeAllDigits) {
