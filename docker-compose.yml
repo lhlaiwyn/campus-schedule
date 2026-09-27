@@ -37,7 +37,13 @@ services:
       CAMPUS_PORTAL_ADAPTER: mock
     ports:
       - "8080:8080"
+    # 让 docker compose ps 能直接看出服务是否真的起来了
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/api/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
 
 volumes:
   mysql-data:
-

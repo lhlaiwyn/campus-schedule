@@ -34,3 +34,81 @@ jobs:
           test -x build/mock_portal
           test -x build/net_server
           test -x build/campus_tests
+
+  # 这一组专门验证 Docker 交付链路：镜像能不能构建、compose 能不能一键起来、
+  # 起来之后接口是不是真的能用。之前 Dockerfile 写了但没在真机上跑过，
+  # 结果漏了 hiredis/openssl/gtest 三个依赖——所以这里必须真的跑一遍。
+  docker-compose-smoke:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 构建镜像（构建阶段会跑一遍单元测试）
+        run: docker build -t campus-schedule:ci .
+
+      - name: 用 compose 启动服务 + MySQL
+        run: docker compose up -d --build
+
+      - name: 等待服务就绪
+        run: |
+          for i in $(seq 1 90); do
+            if curl -fsS http://127.0.0.1:8080/api/health >/dev/null 2>&1; then
+              echo "服务已就绪（第 ${i} 次探测）"
+              break
+            fi
+            sleep 2
+          done
+          echo "--- /api/health ---"
+          curl -fsS http://127.0.0.1:8080/api/health
+          echo
+          echo "--- 容器状态 ---"
+          docker compose ps
+
+      - name: 容器内接口断言（登录 -> 同步 -> 查课表 -> 删课）
+        run: |
+          set -e
+          BASE=http://127.0.0.1:8080
+
+          echo "--- 引擎自检（应为 net，即自研网络库）---"
+          ENGINE=$(curl -fsS "${BASE}/api/version" | jq -r '.httpEngine')
+          echo "httpEngine=${ENGINE}"
+          test "${ENGINE}" = "net"
+
+          echo "--- 未带 token 应 401 ---"
+          test "$(curl -sS -o /dev/null -w '%{http_code}' "${BASE}/api/courses")" = "401"
+
+          echo "--- 登录拿 JWT ---"
+          TOKEN=$(curl -fsS -X POST "${BASE}/api/auth/login" \
+            -H 'Content-Type: application/json' \
+            -d '{"studentId":"2024001","password":"secret123","adapter":"mock"}' | jq -r '.token')
+          test -n "${TOKEN}"
+
+          echo "--- 从模拟教务系统同步课表 ---"
+          curl -fsS -X POST "${BASE}/api/sync" \
+            -H "Authorization: Bearer ${TOKEN}" -H 'Content-Type: application/json' \
+            -d '{"semester":"2026-2027-1","adapter":"mock"}' | jq -c '{courses,inserted,updated}'
+
+          echo "--- 查课表应拿到数据 ---"
+          TOTAL=$(curl -fsS -H "Authorization: Bearer ${TOKEN}" \
+            "${BASE}/api/courses?semester=2026-2027-1" | jq -r '.total')
+          echo "课程数=${TOTAL}"
+          test "${TOTAL}" -ge 1
+
+          echo "--- 新增 + 删除一门课 ---"
+          NEW_ID=$(curl -fsS -X POST "${BASE}/api/courses" \
+            -H "Authorization: Bearer ${TOKEN}" -H 'Content-Type: application/json' \
+            -d '{"name":"容器验证课","code":"DOCKER-1","semester":"2026-2027-1"}' | jq -r '.id')
+          echo "新建 id=${NEW_ID}"
+          test "$(curl -sS -o /dev/null -w '%{http_code}' -X DELETE \
+            -H "Authorization: Bearer ${TOKEN}" "${BASE}/api/courses/${NEW_ID}")" = "200"
+
+          echo "=== 容器内端到端断言全部通过 ==="
+
+      - name: 失败时打印容器日志
+        if: failure()
+        run: docker compose logs --tail=80
+
+      - name: 清理
+        if: always()
+        run: docker compose down -v

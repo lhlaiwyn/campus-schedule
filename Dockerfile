@@ -3,6 +3,9 @@
 # 之所以不做多阶段精简，是因为运行阶段所需的运行库包名随发行版变化，
 # 没有实际构建过一次就写出来很容易在别人机器上失败。先保证可复现，
 # 体积优化记录在 README 的「后续优化」里。
+#
+# 注意：下面这串依赖必须和 CMakeLists.txt 里的 pkg_check_modules(... REQUIRED)
+# 一一对应，少一个就是构建直接失败——最早这版就漏了 hiredis / openssl / gtest。
 FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -17,6 +20,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libspdlog-dev \
         nlohmann-json3-dev \
         libmysqlclient-dev \
+        libhiredis-dev \
+        libssl-dev \
+        libgtest-dev \
+        curl \
         ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
@@ -43,4 +50,3 @@ ENV CAMPUS_HOST=0.0.0.0 \
 EXPOSE 8080
 
 ENTRYPOINT ["/src/build/campus_server"]
-

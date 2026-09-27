@@ -337,12 +337,30 @@ bash scripts/build.sh
 ## 用 Docker 运行
 
 ```bash
-docker compose up --build
+docker compose up -d --build     # 起 MySQL + 本服务
+docker compose ps                # 两个容器都应是 healthy
 curl http://127.0.0.1:8080/api/health
+docker compose logs -f campus-server
+docker compose down -v           # 连数据卷一起清掉
 ```
 
 `docker-compose.yml` 会同时起 MySQL 和本服务，建表语句通过
-`docker-entrypoint-initdb.d` 自动执行。
+`docker-entrypoint-initdb.d` 自动执行；服务容器带健康检查，所以 `docker compose ps`
+能直接看出是否真的可用。
+
+> 这条链路在 GitHub Actions 里**真的跑过**：`docker-compose-smoke` 任务会构建镜像
+> （构建阶段先跑一遍单元测试）、`docker compose up`、然后对容器里的服务做一组真实断言
+> （引擎自检 / 401 鉴权 / 登录 / 同步课表 / 查课表 / 增删课程）。
+> 最早那版 Dockerfile 漏了 `libhiredis-dev`、`libssl-dev`、`libgtest-dev`，构建会直接失败——
+> 这也是为什么现在把它放进 CI，而不是写在 README 里就当成「已完成」。
+
+## 想先看看效果
+
+```bash
+bash scripts/demo.sh          # 引导式演示：12 步边跑边解释
+```
+
+详细说明见 [docs/快速体验.md](docs/快速体验.md)。
 
 ## 配置项
 
